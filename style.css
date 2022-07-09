@@ -1,4 +1,26 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+.gameboard {
+  --width: 300px;
+  margin: 50px auto;
+
+  width: var(--width);
+  height: var(--width);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.gameboard > * {
+  box-sizing: border-box;
+}
+.square {
+  text-align: center;
+  font-size: 4rem;
+  padding-top: 20px;
 }

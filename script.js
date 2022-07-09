@@ -19,7 +19,8 @@ const Gameboard = (function (grids) {
 const createDiv = function (i) {
   const gameboard = document.querySelector(".gameboard");
   const square = document.createElement("div");
-  square.style.border = "1px solid black";
+  square.style.border = "1px solid grey";
+  square.style.borderRadius = "15px";
   square.setAttribute("data-index-number", `${i}`);
   square.classList.add("squareDivs", "square");
   gameboard.appendChild(square);
@@ -94,7 +95,7 @@ function checkPlayersMarks(grids) {
       playerMarks4,
     };
   }
-  
+
   let array = cacheNewInstances(grids).playerMarks2.array.concat(
     cacheNewInstances(grids).playerMarks3.array,
     cacheNewInstances(grids).playerMarks1.array,

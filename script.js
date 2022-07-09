@@ -78,3 +78,12 @@ const gridSquares = (function () {
     divs,
   };
 })();
+function PushToArray(ar, grids) {
+  gridSquares.divs.forEach((square) => {
+    square.addEventListener("click", () => {
+      togglePlayers(ar, square, markTracker);
+      checkForWin(grids);
+      checkForDraw(grids, square);
+    });
+  });
+}

@@ -24,3 +24,15 @@ function togglePlayers(ar, box, arrayT) {
     }
   }
 }
+const marker = (function() {
+    let x = 'X', o = 'O', i = 1;
+    while (i < 3)x.repeat(i),
+    o.repeat(i),
+    i++;
+    x = x.repeat(i),
+    o = o.repeat(i);
+    return {
+      x,
+      o
+    }
+  })();

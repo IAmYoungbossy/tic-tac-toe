@@ -51,3 +51,8 @@ function checkForWin(grids) {
     feedback,
   };
 }
+function boardReset() {
+  gridSquares.divs.forEach((square) => {
+    square.textContent = "";
+  });
+}

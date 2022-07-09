@@ -15,16 +15,20 @@ h1 {
     padding: 10px;
     font-size: 3.5rem;
     color: rgb(202, 202, 202);
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
 .gameboard {
-    --width: 400px;
+    --width: 350px;
     margin: 50px auto;
 
     width: var(--width);
     height: var(--width);
+    box-shadow: 0px 0px 8px rgb(83, 79, 79);
+    padding: 10px;
     display: grid;
-    gap: 5px;
+    gap: 15px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
@@ -36,6 +40,6 @@ h1 {
 .square {
     text-align: center;
     font-size: 4rem;
-    padding-top: 20px;
-    color: bisque;
+    padding-top: 15px;
+    color: rgb(116, 105, 91);
 }

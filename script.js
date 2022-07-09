@@ -72,3 +72,9 @@ function checkForDraw(grids, box) {
     markTracker = [];
   }
 }
+const gridSquares = (function () {
+  const divs = document.querySelectorAll(".squareDivs");
+  return {
+    divs,
+  };
+})();

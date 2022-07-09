@@ -24,15 +24,30 @@ function togglePlayers(ar, box, arrayT) {
     }
   }
 }
-const marker = (function() {
-    let x = 'X', o = 'O', i = 1;
-    while (i < 3)x.repeat(i),
-    o.repeat(i),
-    i++;
-    x = x.repeat(i),
-    o = o.repeat(i);
-    return {
-      x,
-      o
+const marker = (function () {
+  let x = "X",
+    o = "O",
+    i = 1;
+  while (i < 3) x.repeat(i), o.repeat(i), i++;
+  (x = x.repeat(i)), (o = o.repeat(i));
+  return {
+    x,
+    o,
+  };
+})();
+function checkForWin(grids) {
+  let feedback;
+  checkPlayersMarks(grids).array.forEach((validLine) => {
+    if (validLine === marker.x && markTracker.length - 1 < grids * grids) {
+      feedback = "X wins";
+    } else if (
+      validLine === marker.o &&
+      markTracker.length - 1 < grids * grids
+    ) {
+      feedback = "O wins";
     }
-  })();
+  });
+  return {
+    feedback,
+  };
+}

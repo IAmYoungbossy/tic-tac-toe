@@ -7,7 +7,7 @@ h1 {
   margin-top: 20px;
 }
 .gameboard {
-  --width: 300px;
+  --width: 400px;
   margin: 50px auto;
 
   width: var(--width);

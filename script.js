@@ -102,3 +102,48 @@ const Gameboard = (function (grids) {
     },
   };
 })(3);
+PushToArray(Gameboard.array, 3);
+
+function checkPlayersMarks(grids) {
+  function checkGameboardMarks(startIndex, interval, gridSize) {
+    let array = [];
+    while (startIndex < Gameboard.array.length) {
+      array.push(Gameboard.array[startIndex]);
+      array.length > gridSize ? array.pop() : false;
+      startIndex += interval;
+    }
+    return {
+      array: array.join(""),
+    };
+  }
+  function iterateCheckGameboardMarks(startCount, grid, interval, gridSize) {
+    let array = [];
+    for (let i = 0; i < grid; i += startCount) {
+      array.push(checkGameboardMarks(i, interval, gridSize).array);
+    }
+    return {
+      array,
+    };
+  }
+  function cacheNewInstances(grid) {
+    if (grid < 3) return; // Minimum gameboard size is 3x3.
+    const playerMarks1 = checkGameboardMarks(0, grid + 1, grid),
+      playerMarks2 = iterateCheckGameboardMarks(1, grid, grid, grid),
+      playerMarks3 = iterateCheckGameboardMarks(grid, grid * grid, 1, grid),
+      playerMarks4 = checkGameboardMarks(grid - 1, grid - 1, grid);
+    return {
+      playerMarks1,
+      playerMarks2,
+      playerMarks3,
+      playerMarks4,
+    };
+  }
+  let array = cacheNewInstances(grids).playerMarks2.array.concat(
+    cacheNewInstances(grids).playerMarks3.array,
+    cacheNewInstances(grids).playerMarks1.array,
+    cacheNewInstances(grids).playerMarks4.array
+  );
+  return {
+    array,
+  };
+}

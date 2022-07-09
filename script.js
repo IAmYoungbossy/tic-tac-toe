@@ -1,10 +1,11 @@
-let markTracker = [];
+let playTimer = [];
+
 const Gameboard = (function (grids) {
   return {
     array: [],
     reset: function () {
       if (
-        markTracker.length === grids * grids &&
+        playTimer.length === grids * grids &&
         checkForWin(grids).feedback == undefined
       ) {
         Gameboard.array.splice(0, Gameboard.array.length);
@@ -35,22 +36,29 @@ const divSquares = (function () {
   };
 })();
 
+function boardReset() {
+  divSquares.divs.forEach((square) => {
+    square.textContent = "";
+  });
+}
+
 function updatePlayerMarkToGameboard(box) {
   if (box.textContent != "") return;
   else {
-    if (markTracker[markTracker.length - 1] === "O" || markTracker.length < 1) {
+    if (playTimer[playTimer.length - 1] === "O" || playTimer.length < 1) {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "X";
-      markTracker.push("X");
+      playTimer.push("X");
       box.textContent = "X";
-    } else if (markTracker[markTracker.length - 1] === "X") {
+    } else if (playTimer[playTimer.length - 1] === "X") {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "O";
-      markTracker.push("O");
+      playTimer.push("O");
       box.textContent = "O";
     }
   }
 }
 
 function checkPlayersMarks(grids) {
+
   function checkGameboardMarks(startIndex, interval, gridSize) {
     let array = [];
     while (startIndex < Gameboard.array.length) {
@@ -62,6 +70,7 @@ function checkPlayersMarks(grids) {
       array: array.join(""),
     };
   }
+
   function iterateCheckGameboardMarks(startCount, grid, interval, gridSize) {
     let array = [];
     for (let i = 0; i < grid; i += startCount) {
@@ -71,6 +80,7 @@ function checkPlayersMarks(grids) {
       array,
     };
   }
+
   function cacheNewInstances(grid) {
     if (grid < 3) return; // Minimum gameboard size is 3x3.
     const playerMarks1 = checkGameboardMarks(0, grid + 1, grid),
@@ -84,6 +94,7 @@ function checkPlayersMarks(grids) {
       playerMarks4,
     };
   }
+  
   let array = cacheNewInstances(grids).playerMarks2.array.concat(
     cacheNewInstances(grids).playerMarks3.array,
     cacheNewInstances(grids).playerMarks1.array,
@@ -109,12 +120,9 @@ const marker = (function () {
 function checkForWin(grids) {
   let feedback;
   checkPlayersMarks(grids).array.forEach((validLine) => {
-    if (validLine === marker.x && markTracker.length - 1 < grids * grids) {
+    if (validLine === marker.x && playTimer.length - 1 < grids * grids) {
       feedback = "X wins";
-    } else if (
-      validLine === marker.o &&
-      markTracker.length - 1 < grids * grids
-    ) {
+    } else if (validLine === marker.o && playTimer.length - 1 < grids * grids) {
       feedback = "O wins";
     }
   });
@@ -123,26 +131,20 @@ function checkForWin(grids) {
   };
 }
 
-function boardReset() {
-  divSquares.divs.forEach((square) => {
-    square.textContent = "";
-  });
-}
-
 function checkForDraw(grids) {
   if (
-    markTracker.length === grids * grids &&
+    playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
     alert("X and O Draws");
     Gameboard.reset();
     boardReset();
-    markTracker = [];
+    playTimer = [];
   } else if (checkForWin(grids).feedback != undefined) {
     alert(checkForWin(grids).feedback);
     Gameboard.reset();
     boardReset();
-    markTracker = [];
+    playTimer = [];
   }
 }
 
@@ -155,5 +157,4 @@ function gameboardListener(grids) {
     });
   });
 }
-
 gameboardListener(3);

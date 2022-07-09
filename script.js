@@ -56,3 +56,19 @@ function boardReset() {
     square.textContent = "";
   });
 }
+function checkForDraw(grids, box) {
+  if (
+    markTracker.length === grids * grids &&
+    checkForWin(grids).feedback == undefined
+  ) {
+    alert("X and O Draws");
+    Gameboard.reset();
+    boardReset();
+    markTracker = [];
+  } else if (checkForWin(grids).feedback != undefined) {
+    alert(checkForWin(grids).feedback);
+    Gameboard.reset();
+    boardReset();
+    markTracker = [];
+  }
+}

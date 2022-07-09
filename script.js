@@ -87,3 +87,18 @@ function PushToArray(ar, grids) {
     });
   });
 }
+const Gameboard = (function (grids) {
+  return {
+    array: [],
+    reset: function () {
+      if (
+        markTracker.length === grids * grids &&
+        checkForWin(grids).feedback == undefined
+      ) {
+        Gameboard.array.splice(0, Gameboard.array.length);
+      } else if (checkForWin(grids).feedback != undefined) {
+        Gameboard.array.splice(0, Gameboard.array.length);
+      }
+    },
+  };
+})(3);

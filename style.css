@@ -33,7 +33,7 @@ h1 {
 
 .gameboard {
     --width: 350px;
-    margin: 50px auto;
+    margin: 20px auto;
 
     width: var(--width);
     height: var(--width);

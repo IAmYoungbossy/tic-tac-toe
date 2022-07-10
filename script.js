@@ -9,6 +9,18 @@ const messageBoard = (function(){
   welcomeMessage.textContent = 'Hello you\'re welcome to Tic Tac Toe game.';
   infoBoard.appendChild(welcomeMessage);
   infoBoard.appendChild(instructionMsg);
+  return {
+    infoBoard
+  }
+})();
+
+const playAndResetButtons = (function(){
+  const playAI = document.createElement('button');
+  const playHuman = document.createElement('button');
+  playHuman.textContent = 'Play Another Player';
+  playAI.textContent = 'Play An AI';
+  messageBoard.infoBoard.appendChild(playAI);
+  messageBoard.infoBoard.appendChild(playHuman);
 })();
 
 const Gameboard = (function (grids) {

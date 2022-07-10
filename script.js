@@ -1,5 +1,12 @@
 let playTimer = [];
 
+const messageBoard = (function(){
+  const infoBoard = document.querySelector('.info-board');
+  const infoBoardContent = document.createElement('p');
+  infoBoardContent.textContent = 'Hello your welcome to Tic Tac Toe game.';
+  infoBoard.appendChild(infoBoardContent);
+})();
+
 const Gameboard = (function (grids) {
   return {
     array: [],

@@ -64,7 +64,7 @@ const createDivSquares = (function () {
   for (let i = 0; i < 9; i++) createDiv(i);
 })();
 
-const divSquares = (function () {
+const checkBoard = (function () {
   const divs = document.querySelectorAll(".squareDivs");
   return {
     divs,
@@ -72,7 +72,7 @@ const divSquares = (function () {
 })();
 
 function boardReset() {
-  divSquares.divs.forEach((square) => {
+  checkBoard.divs.forEach((square) => {
     square.textContent = "";
   });
 }
@@ -183,11 +183,11 @@ function checkForDraw(grids) {
 }
 
 function gameboardListener(grids) {
-  divSquares.divs.forEach((square) => {
+  checkBoard.divs.forEach((square) => {
     square.addEventListener("click", () => {
       updatePlayerMarkToGameboard(square);
       checkForWin(grids);
-      checkForDraw(grids, square);
+      checkForDraw(grids);
     });
   });
 }

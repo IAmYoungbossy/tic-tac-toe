@@ -5,6 +5,7 @@
 
 body {
     background-color: #1f1f2f;
+    text-align: center;
 }
 
 h1 {
@@ -17,6 +18,17 @@ h1 {
     color: rgb(202, 202, 202);
     display: grid;
     grid-template-columns: 1fr;
+}
+
+.info-board {
+    margin-top: 10px;
+    color: rgb(116, 105, 91);
+    font-size: 1.7rem;
+}
+
+.info-board>p:nth-child(2) {
+    font-size: 1.2rem;
+    color: rgb(150, 134, 134);
 }
 
 .gameboard {

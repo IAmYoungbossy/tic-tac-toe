@@ -31,6 +31,13 @@ h1 {
     color: rgb(150, 134, 134);
 }
 
+.info-board>button {
+    padding: 5px;
+    margin: 0 80px;
+    /* border: none; */
+    border-radius: 5px;
+}
+
 .gameboard {
     --width: 350px;
     margin: 20px auto;

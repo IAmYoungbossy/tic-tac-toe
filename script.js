@@ -1,26 +1,37 @@
 let playTimer = [];
 
-const messageBoard = (function(){
-  const infoBoard = document.querySelector('.info-board');
-  const welcomeMessage = document.createElement('p');
-  let instructionMsg = document.createElement('p');
+const createMsgBoardAndBtn = (function () {
+  const infoBoard = document.querySelector(".info-board");
+  const welcomeMessage = document.createElement("p");
+  let instructionMsg = document.createElement("p");
+  const playAI = document.createElement("button");
+  const playHuman = document.createElement("button");
+  const bodyHTML = document.querySelector("body");
+  const resetGame = document.createElement("button");
 
-  instructionMsg.textContent = 'Click any of the below buttons to proceed.';
-  welcomeMessage.textContent = 'Hello you\'re welcome to Tic Tac Toe game.';
+  bodyHTML.appendChild(resetGame);
   infoBoard.appendChild(welcomeMessage);
   infoBoard.appendChild(instructionMsg);
+  infoBoard.appendChild(playAI);
+  infoBoard.appendChild(playHuman);
   return {
-    infoBoard
-  }
+    infoBoard,
+    welcomeMessage,
+    instructionMsg,
+    playAI,
+    playHuman,
+    resetGame,
+  };
 })();
 
-const playAndResetButtons = (function(){
-  const playAI = document.createElement('button');
-  const playHuman = document.createElement('button');
-  playHuman.textContent = 'Play Another Player';
-  playAI.textContent = 'Play An AI';
-  messageBoard.infoBoard.appendChild(playAI);
-  messageBoard.infoBoard.appendChild(playHuman);
+const defaultTexts = (function () {
+  createMsgBoardAndBtn.instructionMsg.textContent =
+    "Click any of the below buttons to proceed.";
+  createMsgBoardAndBtn.welcomeMessage.textContent =
+    "Hello you're welcome to Tic Tac Toe game.";
+  createMsgBoardAndBtn.playHuman.textContent = "Play human";
+  createMsgBoardAndBtn.playAI.textContent = "Play An A.I.";
+  createMsgBoardAndBtn.resetGame.textContent = "Restart Game";
 })();
 
 const Gameboard = (function (grids) {
@@ -82,7 +93,6 @@ function updatePlayerMarkToGameboard(box) {
 }
 
 function checkPlayersMarks(grids) {
-
   function checkGameboardMarks(startIndex, interval, gridSize) {
     let array = [];
     while (startIndex < Gameboard.array.length) {
@@ -181,4 +191,6 @@ function gameboardListener(grids) {
     });
   });
 }
-gameboardListener(3);
+createMsgBoardAndBtn.playHuman.addEventListener("click", () =>
+  gameboardListener(3)
+);

@@ -8,7 +8,6 @@ const createMsgBoardAndBtn = (function () {
   const playHuman = document.createElement("button");
   const bodyHTML = document.querySelector("body");
   const resetGame = document.createElement("button");
-
   bodyHTML.appendChild(resetGame);
   infoBoard.appendChild(welcomeMessage);
   infoBoard.appendChild(instructionMsg);
@@ -77,7 +76,7 @@ function boardReset() {
   });
 }
 
-function updatePlayerMarkToGameboard(box) {
+function markBoard(box) {
   if (box.textContent != "") return;
   else {
     if (playTimer[playTimer.length - 1] === "O" || playTimer.length < 1) {
@@ -182,12 +181,12 @@ function checkForDraw(grids) {
   }
 }
 
-function gameboardListener(grids) {
+function gameboardListener(grid) {
   checkBoard.divs.forEach((square) => {
     square.addEventListener("click", () => {
-      updatePlayerMarkToGameboard(square);
-      checkForWin(grids);
-      checkForDraw(grids);
+      markBoard(square);
+      checkForWin(grid);
+      checkForDraw(grid);
     });
   });
 }

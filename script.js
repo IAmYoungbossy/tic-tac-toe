@@ -179,10 +179,16 @@ function checkForWin(grids) {
   let feedback;
   let backgroundColorIndex;
   storeAllGameMoves(grids).array.forEach((validLine) => {
-    if (validLine === validWinMoveFor.x && playTimer.length - 1 < grids * grids) {
+    if (
+      validLine === validWinMoveFor.x &&
+      playTimer.length - 1 < grids * grids
+    ) {
       feedback = "X wins";
       backgroundColorIndex = storeAllGameMoves(grids).array.indexOf(validLine);
-    } else if (validLine === validWinMoveFor.o && playTimer.length - 1 < grids * grids) {
+    } else if (
+      validLine === validWinMoveFor.o &&
+      playTimer.length - 1 < grids * grids
+    ) {
       feedback = "O wins";
       backgroundColorIndex = storeAllGameMoves(grids).array.indexOf(validLine);
     }
@@ -236,11 +242,9 @@ function restartGame() {
   boardReset();
   playTimer = [];
   checkForWin(3).feedback = "";
-  createDomElement.gameReporter.textContent =
-    "Player X make your first move.";
+  createDomElement.gameReporter.textContent = "Player X make your first move.";
   setTimeout(function () {
-    createDomElement.instruction.textContent =
-      "New game new opportunity.";
+    createDomElement.instruction.textContent = "New game new opportunity.";
   }, 500);
   setTimeout(function () {
     if (playTimer.length >= 1) {
@@ -288,3 +292,27 @@ createDomElement.playHuman.addEventListener("click", () => {
   }, 1000);
 });
 createDomElement.resetGame.addEventListener("click", restartGame);
+
+function findAvailableCheckBox() {
+  let listOfUndefined = [];
+  let listOfMarkedIndexes = [];
+  for (let i = 0; i < Gameboard.array.length; i++) {
+    if (Gameboard.array[i] === undefined) {
+      listOfUndefined.push(i);
+    }
+  }
+  for (let i = 0; i < Gameboard.array.length; i++) {
+    if (Gameboard.array[i] !== undefined) {
+      listOfMarkedIndexes.push(i);
+    }
+  }
+  let maxOflistOfMarkedIndex = Math.max(...listOfMarkedIndexes);
+  let listOfAvailableIndexes = [];
+  let i = maxOflistOfMarkedIndex + 1;
+  while (i < 9) {
+    listOfAvailableIndexes.push(i);
+    i++;
+  }
+  let totalAvailableIndexes = listOfUndefined.concat(listOfAvailableIndexes);
+  console.log(totalAvailableIndexes);
+}

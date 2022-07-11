@@ -205,6 +205,12 @@ function gameboardListener(grid) {
     });
   });
 }
-createMsgBoardAndBtn.playHuman.addEventListener("click", () =>
-  gameboardListener(3)
-);
+createMsgBoardAndBtn.playHuman.addEventListener("click", () => {
+  gameboardListener(3);
+  setTimeout(function() {
+    if (playTimer.length === 0) {
+      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player X make your first move.';
+    }
+  }, 1000)
+});
+createMsgBoardAndBtn.resetGame.addEventListener('click', restartGame);

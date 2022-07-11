@@ -85,12 +85,24 @@ function markBoard(box) {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "X";
       playTimer.push("X");
       box.textContent = "X";
+      setTimeout(function () {
+        createMsgBoardAndBtn.welcomeMessage.textContent = "Player O's turn.";
+      }, 500);
     } else if (playTimer[playTimer.length - 1] === "X") {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "O";
       playTimer.push("O");
       box.textContent = "O";
+      setTimeout(function () {
+        createMsgBoardAndBtn.welcomeMessage.textContent = "Player X's turn.";
+      }, 500);
     }
   }
+  setTimeout(function () {
+    if (playTimer.length >= 1) {
+      createMsgBoardAndBtn.instructionMsg.textContent =
+        "Think before making your next move.";
+    }
+  }, 1000);
 }
 
 function checkPlayersMarks(grids) {
@@ -171,29 +183,38 @@ function checkForDraw(grids) {
     playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
-    createMsgBoardAndBtn.welcomeMessage.textContent = 'It\'s A Draw Game.';
-    createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.';
+    createMsgBoardAndBtn.welcomeMessage.textContent = "It's A Draw Game.";
+    createMsgBoardAndBtn.instructionMsg.textContent =
+      "Click the Restart button to play again.";
   } else if (checkForWin(grids).feedback != undefined) {
-    if (checkForWin(grids).feedback == 'X wins') {
-      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player X Has Won This Round.';
-      setTimeout(function() {
-        createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.'
+    if (checkForWin(grids).feedback == "X wins") {
+      setTimeout(function () {
+        createMsgBoardAndBtn.welcomeMessage.textContent =
+          "Player X Has Won This Round.";
+      }, 501);
+      setTimeout(function () {
+        createMsgBoardAndBtn.instructionMsg.textContent =
+          "Click the Restart button to play again.";
       }, 1000);
     }
-    if (checkForWin(grids).feedback == 'O wins') {
-      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player O Has Won This Round.';
-      setTimeout(function() {
-        createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.'
+    if (checkForWin(grids).feedback == "O wins") {
+      setTimeout(function () {
+        createMsgBoardAndBtn.welcomeMessage.textContent =
+          "Player O Has Won This Round.";
+      }, 501);
+      setTimeout(function () {
+        createMsgBoardAndBtn.instructionMsg.textContent =
+          "Click the Restart button to play again.";
       }, 1000);
     }
   }
 }
 
-function restartGame(){
+function restartGame() {
   Gameboard.reset();
   boardReset();
   playTimer = [];
-  checkForWin(3).feedback = '';
+  checkForWin(3).feedback = "";
 }
 
 function gameboardListener(grid) {
@@ -207,10 +228,11 @@ function gameboardListener(grid) {
 }
 createMsgBoardAndBtn.playHuman.addEventListener("click", () => {
   gameboardListener(3);
-  setTimeout(function() {
+  setTimeout(function () {
     if (playTimer.length === 0) {
-      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player X make your first move.';
+      createMsgBoardAndBtn.welcomeMessage.textContent =
+        "Player X make your first move.";
     }
-  }, 1000)
+  }, 1000);
 });
-createMsgBoardAndBtn.resetGame.addEventListener('click', restartGame);
+createMsgBoardAndBtn.resetGame.addEventListener("click", restartGame);

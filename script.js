@@ -171,16 +171,17 @@ function checkForDraw(grids) {
     playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
-    alert("X and O Draws");
-    Gameboard.reset();
-    boardReset();
-    playTimer = [];
+    
   } else if (checkForWin(grids).feedback != undefined) {
-    alert(checkForWin(grids).feedback);
-    Gameboard.reset();
-    boardReset();
-    playTimer = [];
+    
   }
+}
+
+function restartGame(){
+  Gameboard.reset();
+  boardReset();
+  playTimer = [];
+  checkForWin(3).feedback = '';
 }
 
 function gameboardListener(grid) {

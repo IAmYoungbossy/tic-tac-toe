@@ -171,9 +171,21 @@ function checkForDraw(grids) {
     playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
-    
+    createMsgBoardAndBtn.welcomeMessage.textContent = 'It\'s A Draw Game.';
+    createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.';
   } else if (checkForWin(grids).feedback != undefined) {
-    
+    if (checkForWin(grids).feedback == 'X wins') {
+      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player X Has Won This Round.';
+      setTimeout(function() {
+        createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.'
+      }, 1000);
+    }
+    if (checkForWin(grids).feedback == 'O wins') {
+      createMsgBoardAndBtn.welcomeMessage.textContent = 'Player O Has Won This Round.';
+      setTimeout(function() {
+        createMsgBoardAndBtn.instructionMsg.textContent = 'Click the Restart button to play again.'
+      }, 1000);
+    }
   }
 }
 

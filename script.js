@@ -215,6 +215,18 @@ function restartGame() {
   boardReset();
   playTimer = [];
   checkForWin(3).feedback = "";
+  createMsgBoardAndBtn.welcomeMessage.textContent =
+    "Player X make your first move.";
+  setTimeout(function() {
+    createMsgBoardAndBtn.instructionMsg.textContent =
+    "New game new opportunity.";
+  }, 500)
+  setTimeout(function () {
+    if (playTimer.length >= 1) {
+      createMsgBoardAndBtn.instructionMsg.textContent =
+        "Think before making your next move.";
+    }
+  }, 1000);
 }
 
 function gameboardListener(grid) {

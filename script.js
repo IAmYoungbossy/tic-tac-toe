@@ -78,6 +78,8 @@ function boardReset() {
 
 function markBoard(box) {
   if (box.textContent != "") return;
+  if (checkForWin(3).feedback != undefined) return;
+  if (playTimer.length === 9 && checkForWin(3).feedback == undefined) return;
   else {
     if (playTimer[playTimer.length - 1] === "O" || playTimer.length < 1) {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "X";

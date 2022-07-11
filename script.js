@@ -134,7 +134,7 @@ function iteratescanForValidMove(startCount, grid, interval, gridSize) {
   };
 }
 function cacheNewInstances(grid) {
-  if (grid < 3) return; // Minimum gameboard size is 3x3.
+  if (grid < grid) return;
   const playerMarks1 = scanForValidMove(0, grid + 1, grid),
     playerMarks2 = iteratescanForValidMove(1, grid, grid, grid),
     playerMarks3 = iteratescanForValidMove(grid, grid * grid, 1, grid),

@@ -244,7 +244,7 @@ function restartGame() {
   checkForWin(3).feedback = "";
   createDomElement.gameReporter.textContent = "Player X make your first move.";
   setTimeout(function () {
-    createDomElement.instruction.textContent = "New game new opportunity.";
+    createDomElement.instruction.textContent = "New game, new opportunity. Think smart.";
   }, 500);
   setTimeout(function () {
     if (playTimer.length >= 1) {

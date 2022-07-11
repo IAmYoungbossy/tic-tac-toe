@@ -1,4 +1,5 @@
 let playTimer = [];
+let backgroundArray = [];
 
 const createMsgBoardAndBtn = (function () {
   const infoBoard = document.querySelector(".info-board");
@@ -27,13 +28,13 @@ const defaultTexts = (function () {
   createMsgBoardAndBtn.instructionMsg.textContent =
     "Click any of the below buttons to proceed.";
   createMsgBoardAndBtn.welcomeMessage.textContent =
-    "Hello you're welcome to Tic Tac Toe game.";
+    "You're welcome to Tic Tac Toe game.";
   createMsgBoardAndBtn.playHuman.textContent = "Play human";
   createMsgBoardAndBtn.playAI.textContent = "Play An A.I.";
   createMsgBoardAndBtn.resetGame.textContent = "Restart Game";
 })();
 
-const Gameboard = (function (grids) {
+const gameStorage = function (grids) {
   return {
     array: [],
     reset: function () {
@@ -47,7 +48,8 @@ const Gameboard = (function (grids) {
       }
     },
   };
-})(3);
+};
+const Gameboard = gameStorage(3);
 
 const createDiv = function (i) {
   const gameboard = document.querySelector(".gameboard");
@@ -58,7 +60,6 @@ const createDiv = function (i) {
   square.classList.add("squareDivs", "square");
   gameboard.appendChild(square);
 };
-
 const createDivSquares = (function () {
   for (let i = 0; i < 9; i++) createDiv(i);
 })();
@@ -105,50 +106,60 @@ function markBoard(box) {
   }, 1000);
 }
 
+function checkGameboardMarks(startIndex, interval, gridSize) {
+  let array = [];
+  let index = [];
+  while (startIndex < Gameboard.array.length) {
+    array.push(Gameboard.array[startIndex]);
+    index.push(startIndex);
+    array.length > gridSize ? array.pop() : false;
+    index.length > gridSize ? index.pop() : false;
+    startIndex += interval;
+  }
+  return {
+    array: array.join(""),
+    index: index.join(""),
+  };
+}
+function iterateCheckGameboardMarks(startCount, grid, interval, gridSize) {
+  let array = [];
+  let index = [];
+  for (let i = 0; i < grid; i += startCount) {
+    array.push(checkGameboardMarks(i, interval, gridSize).array);
+    index.push(checkGameboardMarks(i, interval, gridSize).index);
+  }
+  return {
+    array,
+    index,
+  };
+}
+function cacheNewInstances(grid) {
+  if (grid < 3) return; // Minimum gameboard size is 3x3.
+  const playerMarks1 = checkGameboardMarks(0, grid + 1, grid),
+    playerMarks2 = iterateCheckGameboardMarks(1, grid, grid, grid),
+    playerMarks3 = iterateCheckGameboardMarks(grid, grid * grid, 1, grid),
+    playerMarks4 = checkGameboardMarks(grid - 1, grid - 1, grid);
+  return {
+    playerMarks1,
+    playerMarks2,
+    playerMarks3,
+    playerMarks4,
+  };
+}
 function checkPlayersMarks(grids) {
-  function checkGameboardMarks(startIndex, interval, gridSize) {
-    let array = [];
-    while (startIndex < Gameboard.array.length) {
-      array.push(Gameboard.array[startIndex]);
-      array.length > gridSize ? array.pop() : false;
-      startIndex += interval;
-    }
-    return {
-      array: array.join(""),
-    };
-  }
-
-  function iterateCheckGameboardMarks(startCount, grid, interval, gridSize) {
-    let array = [];
-    for (let i = 0; i < grid; i += startCount) {
-      array.push(checkGameboardMarks(i, interval, gridSize).array);
-    }
-    return {
-      array,
-    };
-  }
-
-  function cacheNewInstances(grid) {
-    if (grid < 3) return; // Minimum gameboard size is 3x3.
-    const playerMarks1 = checkGameboardMarks(0, grid + 1, grid),
-      playerMarks2 = iterateCheckGameboardMarks(1, grid, grid, grid),
-      playerMarks3 = iterateCheckGameboardMarks(grid, grid * grid, 1, grid),
-      playerMarks4 = checkGameboardMarks(grid - 1, grid - 1, grid);
-    return {
-      playerMarks1,
-      playerMarks2,
-      playerMarks3,
-      playerMarks4,
-    };
-  }
-
   let array = cacheNewInstances(grids).playerMarks2.array.concat(
     cacheNewInstances(grids).playerMarks3.array,
     cacheNewInstances(grids).playerMarks1.array,
     cacheNewInstances(grids).playerMarks4.array
   );
+  let index = cacheNewInstances(grids).playerMarks2.index.concat(
+    cacheNewInstances(grids).playerMarks3.index,
+    cacheNewInstances(grids).playerMarks1.index,
+    cacheNewInstances(grids).playerMarks4.index
+  );
   return {
     array,
+    index,
   };
 }
 
@@ -166,28 +177,37 @@ const marker = (function () {
 
 function checkForWin(grids) {
   let feedback;
+  let backgroundColorIndex;
   checkPlayersMarks(grids).array.forEach((validLine) => {
     if (validLine === marker.x && playTimer.length - 1 < grids * grids) {
       feedback = "X wins";
+      backgroundColorIndex = checkPlayersMarks(grids).array.indexOf(validLine);
     } else if (validLine === marker.o && playTimer.length - 1 < grids * grids) {
       feedback = "O wins";
+      backgroundColorIndex = checkPlayersMarks(grids).array.indexOf(validLine);
     }
   });
   return {
     feedback,
+    backgroundColorIndex,
   };
 }
 
-function checkForDraw(grids) {
+function announceGameOutcome(grids) {
   if (
     playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
-    createMsgBoardAndBtn.welcomeMessage.textContent = "It's A Draw Game.";
-    createMsgBoardAndBtn.instructionMsg.textContent =
-      "Click the Restart button to play again.";
+    setTimeout(function () {
+      createMsgBoardAndBtn.welcomeMessage.textContent = "It's A Draw Game.";
+    }, 501);
+    setTimeout(function () {
+      createMsgBoardAndBtn.instructionMsg.textContent =
+        "Click the Restart button to play again.";
+    }, 1000);
   } else if (checkForWin(grids).feedback != undefined) {
     if (checkForWin(grids).feedback == "X wins") {
+      changeBackgroundColorForValidMarks(grids);
       setTimeout(function () {
         createMsgBoardAndBtn.welcomeMessage.textContent =
           "Player X Has Won This Round.";
@@ -198,6 +218,7 @@ function checkForDraw(grids) {
       }, 1000);
     }
     if (checkForWin(grids).feedback == "O wins") {
+      changeBackgroundColorForValidMarks(grids);
       setTimeout(function () {
         createMsgBoardAndBtn.welcomeMessage.textContent =
           "Player O Has Won This Round.";
@@ -217,16 +238,20 @@ function restartGame() {
   checkForWin(3).feedback = "";
   createMsgBoardAndBtn.welcomeMessage.textContent =
     "Player X make your first move.";
-  setTimeout(function() {
+  setTimeout(function () {
     createMsgBoardAndBtn.instructionMsg.textContent =
-    "New game new opportunity.";
-  }, 500)
+      "New game new opportunity.";
+  }, 500);
   setTimeout(function () {
     if (playTimer.length >= 1) {
       createMsgBoardAndBtn.instructionMsg.textContent =
         "Think before making your next move.";
     }
   }, 1000);
+  checkBoard.divs.forEach((div) => {
+    div.style.backgroundColor = "#1f1f2f";
+    div.style.color = "#74695b";
+  });
 }
 
 function gameboardListener(grid) {
@@ -234,10 +259,25 @@ function gameboardListener(grid) {
     square.addEventListener("click", () => {
       markBoard(square);
       checkForWin(grid);
-      checkForDraw(grid);
+      announceGameOutcome(grid);
     });
   });
 }
+
+function changeBackgroundColorForValidMarks(grids) {
+  let array = [
+    ...checkPlayersMarks(grids).index[+checkForWin(grids).backgroundColorIndex],
+  ];
+  for (let i = 0; i <= checkBoard.divs.length; i++) {
+    for (let j = 0; j <= checkBoard.divs.length; j++) {
+      if (i == array[j]) {
+        checkBoard.divs[i].style.backgroundColor = "#4c495f";
+        checkBoard.divs[i].style.color = "#cacaca";
+      }
+    }
+  }
+}
+
 createMsgBoardAndBtn.playHuman.addEventListener("click", () => {
   gameboardListener(3);
   setTimeout(function () {

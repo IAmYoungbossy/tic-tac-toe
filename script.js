@@ -244,7 +244,8 @@ function restartGame() {
   checkForWin(3).feedback = "";
   createDomElement.gameReporter.textContent = "Player X make your first move.";
   setTimeout(function () {
-    createDomElement.instruction.textContent = "New game, new opportunity. Think smart.";
+    createDomElement.instruction.textContent =
+      "New game, new opportunity. Think smart.";
   }, 500);
   setTimeout(function () {
     if (playTimer.length >= 1) {
@@ -294,7 +295,10 @@ createDomElement.playHuman.addEventListener("click", () => {
 createDomElement.resetGame.addEventListener("click", restartGame);
 
 function findAvailableCheckBox() {
-  let listOfUndefined = [], listOfMarkedIndexes = [], array = [], listOfAvailableIndexes = [];
+  let listOfUndefined = [],
+    listOfMarkedIndexes = [],
+    array = [],
+    listOfAvailableIndexes = [];
   for (let i = 0; i < Gameboard.array.length; i++) {
     if (Gameboard.array[i] === undefined) {
       listOfUndefined.push(i);
@@ -313,12 +317,29 @@ function findAvailableCheckBox() {
   }
   array = listOfUndefined.concat(listOfAvailableIndexes);
   return {
-    array
-  }
+    array,
+  };
 }
 function chooseRandom() {
   let index = Math.floor(Math.random() * findAvailableCheckBox().array.length);
   return {
-    index
-  }
+    index,
+  };
 }
+setTimeout(function () {
+  let a = findAvailableCheckBox().array[chooseRandom().index];
+  if (playTimer[playTimer.length - 1] === "X") {
+    Gameboard.array[a] = "O";
+    playTimer.push("O");
+
+    for (let i = 0; i < 9; i++) {
+      if (checkBoard.divs[i].dataset.indexNumber == a) {
+        checkBoard.divs[i].textContent = "O";
+        announceGameOutcome(grid);
+      }
+    }
+    setTimeout(function () {
+      createDomElement.gameReporter.textContent = "Player X's turn.";
+    }, 500);
+  }
+}, 1000);

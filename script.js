@@ -263,6 +263,7 @@ function gameboardListener(grid) {
   checkBoard.divs.forEach((square) => {
     square.addEventListener("click", () => {
       markBoard(square);
+      computerPlay(grid);
       checkForWin(grid);
       announceGameOutcome(grid);
     });
@@ -294,52 +295,56 @@ createDomElement.playHuman.addEventListener("click", () => {
 });
 createDomElement.resetGame.addEventListener("click", restartGame);
 
-function findAvailableCheckBox() {
-  let listOfUndefined = [],
-    listOfMarkedIndexes = [],
-    array = [],
-    listOfAvailableIndexes = [];
-  for (let i = 0; i < Gameboard.array.length; i++) {
-    if (Gameboard.array[i] === undefined) {
-      listOfUndefined.push(i);
-    }
-  }
-  for (let i = 0; i < Gameboard.array.length; i++) {
-    if (Gameboard.array[i] !== undefined) {
-      listOfMarkedIndexes.push(i);
-    }
-  }
-  let maxOflistOfMarkedIndex = Math.max(...listOfMarkedIndexes);
-  let i = maxOflistOfMarkedIndex + 1;
-  while (i < 9) {
-    listOfAvailableIndexes.push(i);
-    i++;
-  }
-  array = listOfUndefined.concat(listOfAvailableIndexes);
-  return {
-    array,
-  };
-}
-function chooseRandom() {
-  let index = Math.floor(Math.random() * findAvailableCheckBox().array.length);
-  return {
-    index,
-  };
-}
-setTimeout(function () {
-  let a = findAvailableCheckBox().array[chooseRandom().index];
-  if (playTimer[playTimer.length - 1] === "X") {
-    Gameboard.array[a] = "O";
-    playTimer.push("O");
-
-    for (let i = 0; i < 9; i++) {
-      if (checkBoard.divs[i].dataset.indexNumber == a) {
-        checkBoard.divs[i].textContent = "O";
-        announceGameOutcome(grid);
+function computerPlay (grid) {
+  function findAvailableCheckBox() {
+    let listOfUndefined = [],
+      listOfMarkedIndexes = [],
+      array = [],
+      listOfAvailableIndexes = [];
+    for (let i = 0; i < Gameboard.array.length; i++) {
+      if (Gameboard.array[i] === undefined) {
+        listOfUndefined.push(i);
       }
     }
-    setTimeout(function () {
-      createDomElement.gameReporter.textContent = "Player X's turn.";
-    }, 500);
+    for (let i = 0; i < Gameboard.array.length; i++) {
+      if (Gameboard.array[i] !== undefined) {
+        listOfMarkedIndexes.push(i);
+      }
+    }
+    let maxOflistOfMarkedIndex = Math.max(...listOfMarkedIndexes);
+    let i = maxOflistOfMarkedIndex + 1;
+    while (i < 9) {
+      listOfAvailableIndexes.push(i);
+      i++;
+    }
+    array = listOfUndefined.concat(listOfAvailableIndexes);
+    return {
+      array,
+    };
   }
-}, 1000);
+  function chooseRandom() {
+    let index = Math.floor(
+      Math.random() * findAvailableCheckBox().array.length
+    );
+    return {
+      index,
+    };
+  }
+  setTimeout(function () {
+    let a = findAvailableCheckBox().array[chooseRandom().index];
+    if (playTimer[playTimer.length - 1] === "X") {
+      Gameboard.array[a] = "O";
+      playTimer.push("O");
+
+      for (let i = 0; i < 9; i++) {
+        if (checkBoard.divs[i].dataset.indexNumber == a) {
+          checkBoard.divs[i].textContent = "O";
+          announceGameOutcome(grid);
+        }
+      }
+      setTimeout(function () {
+        createDomElement.gameReporter.textContent = "Player X's turn.";
+      }, 500);
+    }
+  }, 1000);
+}

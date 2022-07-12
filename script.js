@@ -294,8 +294,7 @@ createDomElement.playHuman.addEventListener("click", () => {
 createDomElement.resetGame.addEventListener("click", restartGame);
 
 function findAvailableCheckBox() {
-  let listOfUndefined = [];
-  let listOfMarkedIndexes = [];
+  let listOfUndefined = [], listOfMarkedIndexes = [], array = [], listOfAvailableIndexes = [];
   for (let i = 0; i < Gameboard.array.length; i++) {
     if (Gameboard.array[i] === undefined) {
       listOfUndefined.push(i);
@@ -307,12 +306,19 @@ function findAvailableCheckBox() {
     }
   }
   let maxOflistOfMarkedIndex = Math.max(...listOfMarkedIndexes);
-  let listOfAvailableIndexes = [];
   let i = maxOflistOfMarkedIndex + 1;
   while (i < 9) {
     listOfAvailableIndexes.push(i);
     i++;
   }
-  let totalAvailableIndexes = listOfUndefined.concat(listOfAvailableIndexes);
-  console.log(totalAvailableIndexes);
+  array = listOfUndefined.concat(listOfAvailableIndexes);
+  return {
+    array
+  }
+}
+function chooseRandom() {
+  let index = Math.floor(Math.random() * findAvailableCheckBox().array.length);
+  return {
+    index
+  }
 }

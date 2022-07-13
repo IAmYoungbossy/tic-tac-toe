@@ -200,10 +200,12 @@ function checkForWin(grids) {
 }
 
 function announceGameOutcome(grids) {
+  let condition;
   if (
     playTimer.length === grids * grids &&
     checkForWin(grids).feedback == undefined
   ) {
+    condition = true;
     setTimeout(function () {
       createDomElement.gameReporter.textContent = "It's A Draw Game.";
     }, 501);
@@ -213,6 +215,7 @@ function announceGameOutcome(grids) {
     }, 1000);
   } else if (checkForWin(grids).feedback != undefined) {
     if (checkForWin(grids).feedback == "X wins") {
+      condition = true;
       addBackgroundColorForValidMoves(grids);
       setTimeout(function () {
         createDomElement.gameReporter.textContent =
@@ -224,6 +227,7 @@ function announceGameOutcome(grids) {
       }, 1000);
     }
     if (checkForWin(grids).feedback == "O wins") {
+      condition = true;
       addBackgroundColorForValidMoves(grids);
       setTimeout(function () {
         createDomElement.gameReporter.textContent =
@@ -234,6 +238,9 @@ function announceGameOutcome(grids) {
           "Click the Restart button to play again.";
       }, 1000);
     }
+  }
+  return {
+    condition,
   }
 }
 

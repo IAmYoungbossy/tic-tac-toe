@@ -54,7 +54,7 @@ const Gameboard = gameStorage(3);
 const createPlayBoard = function (i) {
   const gameboard = document.querySelector(".gameboard");
   const square = document.createElement("div");
-  square.style.border = "1px solid grey";
+  square.style.border = "1px solid #703f70";
   square.style.borderRadius = "15px";
   square.setAttribute("data-index-number", `${i}`);
   square.classList.add("squareDivs", "square");
@@ -284,7 +284,7 @@ function addBackgroundColorForValidMoves(grids) {
   for (let i = 0; i <= checkBoard.divs.length; i++) {
     for (let j = 0; j <= checkBoard.divs.length; j++) {
       if (i == array[j]) {
-        checkBoard.divs[i].style.backgroundColor = "#4c495f";
+        checkBoard.divs[i].style.backgroundColor = "#8000804d";
         checkBoard.divs[i].style.color = "#cacaca";
       }
     }

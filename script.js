@@ -291,7 +291,7 @@ function addBackgroundColorForValidMoves(grids) {
   }
 }
 
-createDomElement.playHuman.addEventListener("click", () => {
+function startAndRestart(){
   gameboardListener(3);
   setTimeout(function () {
     if (playTimer.length === 0) {
@@ -299,7 +299,10 @@ createDomElement.playHuman.addEventListener("click", () => {
         "Player X make your first move.";
     }
   }, 1000);
-});
+  restartGame();
+}
+
+createDomElement.playHuman.addEventListener("click", startAndRestart);
 createDomElement.resetGame.addEventListener("click", restartGame);
 
 function computerPlay(grid) {

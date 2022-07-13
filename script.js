@@ -7,9 +7,6 @@ const createDomElement = (function () {
   const instruction = document.createElement("p");
   const playAI = document.createElement("button");
   const playHuman = document.createElement("button");
-  const bodyHTML = document.querySelector("body");
-  const resetGame = document.createElement("button");
-  bodyHTML.appendChild(resetGame);
   infoBoard.appendChild(gameReporter);
   infoBoard.appendChild(instruction);
   infoBoard.appendChild(playAI);
@@ -20,7 +17,6 @@ const createDomElement = (function () {
     instruction,
     playAI,
     playHuman,
-    resetGame,
   };
 })();
 
@@ -31,7 +27,6 @@ const defaultTexts = (function () {
     "You're welcome to Tic Tac Toe game.";
   createDomElement.playHuman.textContent = "Play human";
   createDomElement.playAI.textContent = "Play An A.I.";
-  createDomElement.resetGame.textContent = "Restart Game";
 })();
 
 const gameStorage = function (grids) {
@@ -59,6 +54,9 @@ const createPlayBoard = function (i) {
   square.setAttribute("data-index-number", `${i}`);
   square.classList.add("squareDivs", "square");
   gameboard.appendChild(square);
+  return {
+    gameboard
+  }
 };
 const createPlayBoardSquares = (function () {
   for (let i = 0; i < 9; i++) createPlayBoard(i);
@@ -266,11 +264,20 @@ function restartGame() {
   });
 }
 
-function gameboardListener(grid) {
+function gameboardListenerHuman(grid) {
   checkBoard.divs.forEach((square) => {
     square.addEventListener("click", () => {
       markBoard(square);
-      computerPlay(grid);
+      checkForWin(grid);
+      announceGameOutcome(grid);
+    });
+  });
+}
+function gameboardListenerComputer(grid) {
+  checkBoard.divs.forEach((square) => {
+    square.addEventListener("click", () => {
+      markBoard(square);
+      computerPlay(3);
       checkForWin(grid);
       announceGameOutcome(grid);
     });
@@ -291,8 +298,8 @@ function addBackgroundColorForValidMoves(grids) {
   }
 }
 
-function startAndRestart(){
-  gameboardListener(3);
+function startAndRestartHuman() {
+  gameboardListenerHuman(3);
   setTimeout(function () {
     if (playTimer.length === 0) {
       createDomElement.gameReporter.textContent =
@@ -300,10 +307,28 @@ function startAndRestart(){
     }
   }, 1000);
   restartGame();
+  if (createDomElement.playHuman.textContent == "Play human") {
+    createDomElement.playHuman.textContent = "Reset Game";
+    createDomElement.playAI.textContent = "Play An A.I.";
+  }
+}
+function startAndRestartComputer() {
+  gameboardListenerComputer(3);
+  setTimeout(function () {
+    if (playTimer.length === 0) {
+      createDomElement.gameReporter.textContent =
+        "Player X make your first move.";
+    }
+  }, 1000);
+  restartGame();
+  if (createDomElement.playAI.textContent == "Play An A.I.") {
+    createDomElement.playAI.textContent = "Reset Game";
+    createDomElement.playHuman.textContent = "Play Human";
+  }
 }
 
-createDomElement.playHuman.addEventListener("click", startAndRestart);
-createDomElement.resetGame.addEventListener("click", restartGame);
+createDomElement.playHuman.addEventListener("click", startAndRestartHuman);
+createDomElement.playAI.addEventListener("click", startAndRestartComputer);
 
 function computerPlay(grid) {
   function findAvailableCheckBox() {

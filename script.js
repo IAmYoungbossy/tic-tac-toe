@@ -241,7 +241,7 @@ function announceGameOutcome(grids) {
   }
   return {
     condition,
-  }
+  };
 }
 
 function restartGame() {
@@ -302,7 +302,7 @@ createDomElement.playHuman.addEventListener("click", () => {
 });
 createDomElement.resetGame.addEventListener("click", restartGame);
 
-function computerPlay (grid) {
+function computerPlay(grid) {
   function findAvailableCheckBox() {
     let listOfUndefined = [],
       listOfMarkedIndexes = [],
@@ -338,20 +338,23 @@ function computerPlay (grid) {
     };
   }
   setTimeout(function () {
-    let a = findAvailableCheckBox().array[chooseRandom().index];
-    if (playTimer[playTimer.length - 1] === "X") {
-      Gameboard.array[a] = "O";
-      playTimer.push("O");
+    let emptyRandomIndex = findAvailableCheckBox().array[chooseRandom().index];
+    if (announceGameOutcome(grid).condition) return;
+    else {
+      if (playTimer[playTimer.length - 1] === "X") {
+        Gameboard.array[emptyRandomIndex] = "O";
+        playTimer.push("O");
 
-      for (let i = 0; i < 9; i++) {
-        if (checkBoard.divs[i].dataset.indexNumber == a) {
-          checkBoard.divs[i].textContent = "O";
-          announceGameOutcome(grid);
+        for (let i = 0; i < 9; i++) {
+          if (checkBoard.divs[i].dataset.indexNumber == emptyRandomIndex) {
+            checkBoard.divs[i].textContent = "O";
+            announceGameOutcome(grid);
+          }
         }
+        setTimeout(function () {
+          createDomElement.gameReporter.textContent = "Player X's turn.";
+        }, 500);
       }
-      setTimeout(function () {
-        createDomElement.gameReporter.textContent = "Player X's turn.";
-      }, 500);
     }
   }, 1000);
 }

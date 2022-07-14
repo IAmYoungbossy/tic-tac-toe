@@ -151,7 +151,7 @@ function storeAllValidMoves(grids) {
   return {
     array,
     index,
-    reset
+    reset,
   };
 }
 
@@ -355,28 +355,29 @@ function resetGame() {
   });
 }
 
-function gameboardListenerHuman(grid) {
+function gameboardListener(grid) {
   playBoardSquare.divs.forEach((square) => {
-    square.addEventListener("click", () => {
+    function human() {
       markPlayBoard(square);
       checkForWin(grid);
       announceGameOutcome(grid);
-    });
-  });
-}
-function gameboardListenerComputer(grid) {
-  playBoardSquare.divs.forEach((square) => {
-    square.addEventListener("click", () => {
+    }
+    function computer() {
       markPlayBoard(square);
       computerPlay(3);
       checkForWin(grid);
       announceGameOutcome(grid);
-    });
+    }
+    if (square.classList[2] == "human") {
+      square.addEventListener("click", human);
+    } else if (square.classList[2] == "computer") {
+      square.addEventListener("click", computer);
+    }
   });
 }
 
-function startAndRestartHuman() {
-  gameboardListenerHuman(3);
+function startAndRestart() {
+  gameboardListener(3);
   setTimeout(function () {
     if (playTimer.length === 0) {
       createDomElement.gameReporter.textContent =
@@ -384,26 +385,36 @@ function startAndRestartHuman() {
     }
   }, 1000);
   resetGame();
-  if (createDomElement.playHuman.textContent == "Play human") {
-    createDomElement.playHuman.textContent = "Reset Game";
-    createDomElement.playAI.textContent = "Play An A.I.";
-  }
-}
-
-function startAndRestartComputer() {
-  gameboardListenerComputer(3);
-  setTimeout(function () {
-    if (playTimer.length === 0) {
-      createDomElement.gameReporter.textContent =
-        "Player X make your first move.";
+  playBoardSquare.divs.forEach((square) => {
+    if (square.classList[2] == "human") {
+      createDomElement.playHuman.textContent = "Reset Game";
+      createDomElement.playAI.textContent = "Play An A.I.";
+    } else if (square.classList[2] == "computer") {
+      createDomElement.playAI.textContent = "Reset Game";
+      createDomElement.playHuman.textContent = "Play Human";
     }
-  }, 1000);
-  resetGame();
-  if (createDomElement.playAI.textContent == "Play An A.I.") {
-    createDomElement.playAI.textContent = "Reset Game";
-    createDomElement.playHuman.textContent = "Play Human";
-  }
+  });
 }
 
-createDomElement.playHuman.addEventListener("click", startAndRestartHuman);
-createDomElement.playAI.addEventListener("click", startAndRestartComputer);
+createDomElement.playHuman.addEventListener("click", () => {
+  playBoardSquare.divs.forEach(square => {
+    if (square.classList[2] == 'computer') {
+      square.classList.remove('computer');
+      square.classList.add('human');
+    } else {
+      square.classList.add('human');
+    }
+  });
+  startAndRestart();
+});
+createDomElement.playAI.addEventListener("click", () => {
+  playBoardSquare.divs.forEach(square => {
+    if (square.classList[2] == 'human') {
+      square.classList.remove('human');
+      square.classList.add('computer');
+    } else {
+      square.classList.add('computer');
+    }
+  });
+  startAndRestart();
+});

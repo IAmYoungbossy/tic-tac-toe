@@ -63,6 +63,8 @@ const Gameboard = (function (grids) {
         Gameboard.array.splice(0, Gameboard.array.length);
       } else if (checkForWin(grids).feedback != undefined) {
         Gameboard.array.splice(0, Gameboard.array.length);
+      } else if (playTimer.length === 0) {
+        Gameboard.array.splice(0, Gameboard.array.length);
       }
     },
   };
@@ -131,9 +133,25 @@ function storeAllValidMoves(grids) {
     cacheNewInstances(grids).playerMarks1.index,
     cacheNewInstances(grids).playerMarks4.index
   );
+  let reset = function () {
+    if (
+      playTimer.length === grids * grids &&
+      checkForWin(grids).feedback == undefined
+    ) {
+      array.splice(0, array.length);
+      index.splice(0, array.length);
+    } else if (checkForWin(grids).feedback != undefined) {
+      array.splice(0, array.length);
+      index.splice(0, array.length);
+    } else if (playTimer.length === 0) {
+      array.splice(0, array.length);
+      index.splice(0, array.length);
+    }
+  };
   return {
     array,
     index,
+    reset
   };
 }
 
@@ -315,9 +333,10 @@ function computerPlay(grid) {
 }
 
 function resetGame() {
-  Gameboard.reset();
-  clearPlayBoard();
   playTimer = [];
+  Gameboard.reset();
+  storeAllValidMoves(3).reset();
+  clearPlayBoard();
   checkForWin(3).feedback = "";
   createDomElement.gameReporter.textContent = "Player X make your first move.";
   setTimeout(function () {

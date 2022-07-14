@@ -2,12 +2,10 @@
     margin: 0;
     padding: 0;
 }
-
 body {
     background-color: #1f1f2f;
     text-align: center;
 }
-
 h1 {
     width: auto;
     text-align: center;
@@ -21,18 +19,15 @@ h1 {
     box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.384);
     text-shadow: 0px 0px 18px black;
 }
-
 .info-board {
     margin-top: 10px;
     color: rgb(116, 105, 91);
     font-size: 1.7rem;
 }
-
 .info-board>p:nth-child(2) {
     font-size: 1.2rem;
     color: rgb(150, 134, 134);
 }
-
 .info-board>button {
     padding: 5px;
     margin: 20px 60px 5px;
@@ -42,13 +37,12 @@ h1 {
     color: #cacaca;
     box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.356);
 }
-
 .gameboard {
     --width: 350px;
     margin: 20px auto;
-
     width: var(--width);
     height: var(--width);
+    
     box-shadow: 0px 0px 8px black;
     padding: 10px;
     display: grid;
@@ -56,14 +50,16 @@ h1 {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
-
 .gameboard>* {
     box-sizing: border-box;
 }
-
 .square {
     text-align: center;
     font-size: 4rem;
     padding-top: 15px;
     color: rgb(116, 105, 91);
+    box-shadow: 0px 0px 2px #8a398aee;
+}
+.gameboard>div:nth-child(2n) {
+    background-color: #4c495f21;
 }

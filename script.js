@@ -96,7 +96,7 @@ function storeAllValidMoves(grids) {
     }
     return {
       array: array.join(""),
-      index: index.join(""),
+      index: index,
     };
   }
   function iteratescanForValidMove(startCount, grid, interval, gridSize) {
@@ -131,8 +131,8 @@ function storeAllValidMoves(grids) {
   );
   let index = cacheNewInstances(grids).playerMarks2.index.concat(
     cacheNewInstances(grids).playerMarks3.index,
-    cacheNewInstances(grids).playerMarks1.index,
-    cacheNewInstances(grids).playerMarks4.index
+    [cacheNewInstances(grids).playerMarks1.index],
+    [cacheNewInstances(grids).playerMarks4.index]
   );
   let reset = function () {
     if (

@@ -1,5 +1,6 @@
 let playTimer = [];
 let backgroundArray = [];
+let gameboardGrid = 3
 
 const createDomElement = (function () {
   const infoBoard = document.querySelector(".info-board");
@@ -40,7 +41,7 @@ const createPlayBoard = function (i) {
   createDomElement.gameboard.appendChild(square);
 };
 const createPlayBoardSquares = function () {
-  for (let i = 0; i < 9; i++) createPlayBoard(i);
+  for (let i = 0; i < gameboardGrid*gameboardGrid; i++) createPlayBoard(i);
 };
 createPlayBoardSquares();
 
@@ -68,13 +69,13 @@ const Gameboard = (function (grids) {
       }
     },
   };
-})(3);
+})(gameboardGrid);
 
 const validWinMoveFor = (function () {
   let x = "X",
     o = "O",
     i = 1;
-  while (i < 3) x.repeat(i), o.repeat(i), i++;
+  while (i < gameboardGrid) x.repeat(i), o.repeat(i), i++;
   (x = x.repeat(i)), (o = o.repeat(i));
   return {
     x,
@@ -193,6 +194,7 @@ function addBackgroundColorForValidMoves(grids) {
       }
     }
   }
+  console.log(array);
 }
 
 function announceGameOutcome(grids) {
@@ -242,8 +244,8 @@ function announceGameOutcome(grids) {
 
 function markPlayBoard(box) {
   if (box.textContent != "") return;
-  if (checkForWin(3).feedback != undefined) return;
-  if (playTimer.length === 9 && checkForWin(3).feedback == undefined) return;
+  if (checkForWin(gameboardGrid).feedback != undefined) return;
+  if (playTimer.length === gameboardGrid*gameboardGrid && checkForWin(gameboardGrid).feedback == undefined) return;
   else {
     if (playTimer[playTimer.length - 1] === "O" || playTimer.length < 1) {
       Gameboard.array[parseInt(box.dataset.indexNumber)] = "X";
@@ -293,7 +295,7 @@ function computerPlay(grid) {
     }
     let maxOflistOfMarkedIndex = Math.max(...listOfMarkedIndexes);
     let i = maxOflistOfMarkedIndex + 1;
-    while (i < 9) {
+    while (i < gameboardGrid*gameboardGrid) {
       listOfAvailableIndexes.push(i);
       i++;
     }
@@ -318,7 +320,7 @@ function computerPlay(grid) {
         Gameboard.array[emptyRandomIndex] = "O";
         playTimer.push("O");
 
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < gameboardGrid*gameboardGrid; i++) {
           if (playBoardSquare().divs[i].dataset.indexNumber == emptyRandomIndex) {
             playBoardSquare().divs[i].textContent = "O";
             announceGameOutcome(grid);
@@ -335,9 +337,9 @@ function computerPlay(grid) {
 function resetGame() {
   playTimer = [];
   Gameboard.reset();
-  storeAllValidMoves(3).reset();
+  storeAllValidMoves(gameboardGrid).reset();
   clearPlayBoard();
-  checkForWin(3).feedback = "";
+  checkForWin(gameboardGrid).feedback = "";
   createDomElement.gameReporter.textContent = "Player X make your first move.";
   setTimeout(function () {
     createDomElement.instruction.textContent =
@@ -361,10 +363,11 @@ function gameboardListener(grid) {
       markPlayBoard(square);
       checkForWin(grid);
       announceGameOutcome(grid);
+      console.log(storeAllValidMoves(grid).index);
     }
     function computer() {
       markPlayBoard(square);
-      computerPlay(3);
+      computerPlay(gameboardGrid);
       checkForWin(grid);
       announceGameOutcome(grid);
     }
@@ -377,7 +380,7 @@ function gameboardListener(grid) {
 }
 
 function startAndRestart() {
-  gameboardListener(3);
+  gameboardListener(gameboardGrid);
   setTimeout(function () {
     if (playTimer.length === 0) {
       createDomElement.gameReporter.textContent =

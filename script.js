@@ -7,6 +7,7 @@ const createDomElement = (function () {
   const instruction = document.createElement("p");
   const playAI = document.createElement("button");
   const playHuman = document.createElement("button");
+  const gameboard = document.querySelector(".gameboard");
   infoBoard.appendChild(gameReporter);
   infoBoard.appendChild(instruction);
   infoBoard.appendChild(playAI);
@@ -17,6 +18,7 @@ const createDomElement = (function () {
     instruction,
     playAI,
     playHuman,
+    gameboard,
   };
 })();
 
@@ -30,27 +32,25 @@ const defaultTexts = (function () {
 })();
 
 const createPlayBoard = function (i) {
-  const gameboard = document.querySelector(".gameboard");
   const square = document.createElement("div");
   square.style.border = "1px solid #703f70";
   square.style.borderRadius = "15px";
   square.setAttribute("data-index-number", `${i}`);
   square.classList.add("squareDivs", "square");
-  gameboard.appendChild(square);
-  return {
-    gameboard,
-  };
+  createDomElement.gameboard.appendChild(square);
 };
-const createPlayBoardSquares = (function () {
+const createPlayBoardSquares = function () {
   for (let i = 0; i < 9; i++) createPlayBoard(i);
-})();
+};
+createPlayBoardSquares();
 
-const playBoardSquare = (function () {
+const playBoardSquare = function () {
   const divs = document.querySelectorAll(".squareDivs");
   return {
     divs,
   };
-})();
+};
+playBoardSquare();
 
 const Gameboard = (function (grids) {
   return {
@@ -185,11 +185,11 @@ function addBackgroundColorForValidMoves(grids) {
       +checkForWin(grids).backgroundColorIndex
     ],
   ];
-  for (let i = 0; i <= playBoardSquare.divs.length; i++) {
-    for (let j = 0; j <= playBoardSquare.divs.length; j++) {
+  for (let i = 0; i <= playBoardSquare().divs.length; i++) {
+    for (let j = 0; j <= playBoardSquare().divs.length; j++) {
       if (i == array[j]) {
-        playBoardSquare.divs[i].style.backgroundColor = "#8000804d";
-        playBoardSquare.divs[i].style.color = "#cacaca";
+        playBoardSquare().divs[i].style.backgroundColor = "#8000804d";
+        playBoardSquare().divs[i].style.color = "#cacaca";
       }
     }
   }
@@ -270,7 +270,7 @@ function markPlayBoard(box) {
 }
 
 function clearPlayBoard() {
-  playBoardSquare.divs.forEach((square) => {
+  playBoardSquare().divs.forEach((square) => {
     square.textContent = "";
   });
 }
@@ -319,8 +319,8 @@ function computerPlay(grid) {
         playTimer.push("O");
 
         for (let i = 0; i < 9; i++) {
-          if (playBoardSquare.divs[i].dataset.indexNumber == emptyRandomIndex) {
-            playBoardSquare.divs[i].textContent = "O";
+          if (playBoardSquare().divs[i].dataset.indexNumber == emptyRandomIndex) {
+            playBoardSquare().divs[i].textContent = "O";
             announceGameOutcome(grid);
           }
         }
@@ -349,14 +349,14 @@ function resetGame() {
         "Think before making your next move.";
     }
   }, 1000);
-  playBoardSquare.divs.forEach((div) => {
+  playBoardSquare().divs.forEach((div) => {
     div.style.backgroundColor = "#1f1f2f";
     div.style.color = "#74695b";
   });
 }
 
 function gameboardListener(grid) {
-  playBoardSquare.divs.forEach((square) => {
+  playBoardSquare().divs.forEach((square) => {
     function human() {
       markPlayBoard(square);
       checkForWin(grid);
@@ -385,7 +385,7 @@ function startAndRestart() {
     }
   }, 1000);
   resetGame();
-  playBoardSquare.divs.forEach((square) => {
+  playBoardSquare().divs.forEach((square) => {
     if (square.classList[2] == "human") {
       createDomElement.playHuman.textContent = "Reset Game";
       createDomElement.playAI.textContent = "Play An A.I.";
@@ -397,7 +397,12 @@ function startAndRestart() {
 }
 
 createDomElement.playHuman.addEventListener("click", () => {
-  playBoardSquare.divs.forEach(square => {
+  while(createDomElement.gameboard.firstChild){
+    createDomElement.gameboard.removeChild(createDomElement.gameboard.firstChild);
+  }
+  createPlayBoardSquares();
+  playBoardSquare();
+  playBoardSquare().divs.forEach(square => {
     if (square.classList[2] == 'computer') {
       square.classList.remove('computer');
       square.classList.add('human');
@@ -408,7 +413,7 @@ createDomElement.playHuman.addEventListener("click", () => {
   startAndRestart();
 });
 createDomElement.playAI.addEventListener("click", () => {
-  playBoardSquare.divs.forEach(square => {
+  playBoardSquare().divs.forEach(square => {
     if (square.classList[2] == 'human') {
       square.classList.remove('human');
       square.classList.add('computer');

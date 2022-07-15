@@ -1,6 +1,6 @@
 let playTimer = [];
 let backgroundArray = [];
-let gameboardGrid = 3
+let gameboardGrid = 3;
 
 const createDomElement = (function () {
   const infoBoard = document.querySelector(".info-board");
@@ -13,6 +13,8 @@ const createDomElement = (function () {
   infoBoard.appendChild(instruction);
   infoBoard.appendChild(playAI);
   infoBoard.appendChild(playHuman);
+  gameboard.style.gridTemplateColumns = `repeat(${gameboardGrid}, 1fr)`;
+  gameboard.style.gridTemplateRows = `repeat(${gameboardGrid}, 1fr)`;
   return {
     infoBoard,
     gameReporter,

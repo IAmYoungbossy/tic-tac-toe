@@ -191,8 +191,7 @@ function addBackgroundColorForValidMoves(grids) {
   for (let i = 0; i <= playBoardSquare().divs.length; i++) {
     for (let j = 0; j <= playBoardSquare().divs.length; j++) {
       if (i == array[j]) {
-        playBoardSquare().divs[i].style.backgroundColor = "#8000804d";
-        playBoardSquare().divs[i].style.color = "#cacaca";
+        playBoardSquare().divs[i].classList.add('blinking');
       }
     }
   }
@@ -354,8 +353,7 @@ function resetGame() {
     }
   }, 1000);
   playBoardSquare().divs.forEach((div) => {
-    div.style.backgroundColor = "#1f1f2f";
-    div.style.color = "#74695b";
+    div.classList.add('gameboard>div:nth-child(2n)');
   });
 }
 

@@ -22,10 +22,10 @@ h1 {
 .info-board {
   margin-top: 10px;
   color: rgb(116, 105, 91);
-  font-size: 1.7rem;
+  font-size: 1.45rem;
 }
 .info-board > p:nth-child(2) {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: rgb(150, 134, 134);
 }
 .info-board > button {
@@ -73,6 +73,7 @@ h1 {
   border-radius: 5px;
   animation: blinkingBackground 2s infinite;
 }
+
 @keyframes blinkingBackground {
   0% {
     background-color: #422b19;

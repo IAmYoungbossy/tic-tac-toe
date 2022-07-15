@@ -1,6 +1,6 @@
 let playTimer = [];
 let backgroundArray = [];
-let gameboardGrid = 3;
+gameboardGrid = 3;
 
 const createDomElement = (function () {
   const infoBoard = document.querySelector(".info-board");
@@ -24,6 +24,7 @@ const createDomElement = (function () {
     gameboard,
   };
 })();
+
 
 const defaultTexts = (function () {
   createDomElement.instruction.textContent =
@@ -195,7 +196,6 @@ function addBackgroundColorForValidMoves(grids) {
       }
     }
   }
-  console.log(array);
 }
 
 function announceGameOutcome(grids) {
@@ -363,7 +363,6 @@ function gameboardListener(grid) {
       markPlayBoard(square);
       checkForWin(grid);
       announceGameOutcome(grid);
-      console.log(storeAllValidMoves(grid).index);
     }
     function computer() {
       markPlayBoard(square);
@@ -415,7 +414,13 @@ createDomElement.playHuman.addEventListener("click", () => {
   });
   startAndRestart();
 });
+
 createDomElement.playAI.addEventListener("click", () => {
+  while(createDomElement.gameboard.firstChild){
+    createDomElement.gameboard.removeChild(createDomElement.gameboard.firstChild);
+  }
+  createPlayBoardSquares();
+  playBoardSquare();
   playBoardSquare().divs.forEach(square => {
     if (square.classList[2] == 'human') {
       square.classList.remove('human');
